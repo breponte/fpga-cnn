@@ -1,12 +1,12 @@
-# Project Plan: FPGA-Accelerated CNN on PYNQ-Z2 #
+# Project Plan: FPGA-Accelerated CNN on PYNQ-Z2
 Project Owner: Brandon Reponte \
 Start Date: April 2026 \
 Target Completion: June–July 2026 \
 Tools & Hardware: Vivado 2024.2, Python 3.12.3, CIFAR-10 dataset, PYNQ-Z2 (planned acquisition)
 
-## Project Overview ##
+## Project Overview
 The goal of this project is to implement a hardware-accelerated Convolutional Neural Network (CNN) on the PYNQ-Z2 FPGA development board. The project will leverage AXI DMA for streaming data between the Processing System (PS) and Programmable Logic (PL), demonstrating end-to-end AI acceleration on embedded hardware.
-Before the board is available, the project will use Vivado HLS simulations to prototype the CNN and emulate DMA transfers using host-side Python/C++ code.
+Before the board is available, the project will use Vivado HLS simulations to prototype the CNN and emulate DMA transfers using host-side Python code.
 
 Primary Objectives:
 - Build host-side Python scripts to transfer and receive data from the FPGA board.
@@ -23,7 +23,7 @@ Key Deliverables:
 - Full performance report: cycles, latency, throughput, resource utilization.
 - Diagram of PS ↔ PL DMA dataflow pipeline.
 
-## Tools and Resources ##
+## Tools and Resources
 | Resource | Purpose |
 |----------|---------|
 | Vivado 2024.2 | HLS prototyping, RTL synthesis, bitstream generation, block design |
@@ -36,8 +36,8 @@ Reference Materials:
 PYNQ-Z2 board documentation: [PYNQ Docs](https://pynq.readthedocs.io/en/latest/getting_started/pynq_z2_setup.html) \
 Digilent PYNQ-Z2 Reference Manual PDF: [Reference Manual](https://dpoauwgwqsy2x.cloudfront.net/Download/PYNQ_Z2_User_Manual_v1.1.pdf)
 
-## Project Phases ##
-### Phase 0: Preparation / Setup (1 week) ###
+## Project Phases
+### Phase 0: Preparation / Setup (1 week)
 
 - Install Vivado and HLS environment.
 - Set up Python for host simulation.
@@ -46,7 +46,7 @@ Digilent PYNQ-Z2 Reference Manual PDF: [Reference Manual](https://dpoauwgwqsy2x.
 
 Deliverables: Ready-to-go development environment.
 
-### Phase 1: HLS CNN Prototype (2 weeks) ##
+### Phase 1: HLS CNN Prototype (2 weeks)
 - Implement a small CNN in HLS (1–2 convolution layers, optional FC layer).
 - Create a testbench to simulate input tensors and capture output.
 - Instrument HLS for latency, throughput, and resource utilization.
@@ -54,7 +54,7 @@ Deliverables: Ready-to-go development environment.
 
 Deliverables: Functional HLS CNN simulation, performance metrics, and dataflow diagrams.
 
-### Phase 2: Host-Side DMA Simulation (1 week) ###
+### Phase 2: Host-Side DMA Simulation (1 week)
 - Implement Python host scripts to emulate DMA transfers.
 - Introduce buffer/FIFO simulation for streaming input/output.
 - Benchmark simulated throughput and latency.
@@ -62,7 +62,7 @@ Deliverables: Functional HLS CNN simulation, performance metrics, and dataflow d
 
 Deliverables: Complete host-kernel simulation pipeline with metrics.
 
-### Phase 3: Optimization & RTL Preparation (1 week) ###
+### Phase 3: Optimization & RTL Preparation (1 week)
 - Optimize kernel: pipelining, loop unrolling, buffer adjustments.
 - Convert critical areas from HLS to SystemVerilog.
 - Convert data streaming scripts from Python to C++.
@@ -70,7 +70,7 @@ Deliverables: Complete host-kernel simulation pipeline with metrics.
 
 Deliverables: Optimized RTL kernel ready for PYNQ-Z2 deployment.
 
-### Phase 4: Board Deployment (1–2 weeks) ###
+### Phase 4: Board Deployment (1–2 weeks)
 - Deploy kernel on PYNQ-Z2, generate bitstream.
 - Integrate real AXI DMA for PS ↔ PL transfers.
 - Run CNN inference with real inputs and capture outputs.
@@ -78,7 +78,7 @@ Deliverables: Optimized RTL kernel ready for PYNQ-Z2 deployment.
 
 Deliverables: Fully working hardware CNN accelerator with performance report.
 
-### Phase 5: Final Touches ###
+### Phase 5: Final Touches
 - Add additional CNN layers or fully connected layers to improve accuracy and precision.
 - Quantize weights for INT8 computation to improve latency, throughput, and resource utilization.
 - Implement pipelined streaming for batch inference to improve throughput and resource utilization.
