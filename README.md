@@ -41,3 +41,8 @@ TODO
 ## Contributors
 
 - Brandon Reponte
+
+## Citations
+
+This project uses the [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset. Please cite:
+> Krizhevsky, A. (2009). *Learning multiple layers of features from tiny images* (Technical Report). University of Toronto.
