@@ -12,4 +12,21 @@ The dataset is divided into five training batches and one test batch, each with 
 The classes are completely mutually exclusive. There is no overlap between automobiles and trucks. "Automobile" includes sedans, SUVs, things of that sort. "Truck" includes only big trucks. Neither includes pickup trucks.
 ```
 
+The data is not stored within this repository. The dataset must be downloaded on the local machine. The `data_loader.py` contains methods for downloading and extracting the CIFAR-10 dataset via URL.
+
 For more details on the dataset used, visit https://www.cs.toronto.edu/~kriz/cifar.html.
+
+## Dataset Organization
+
+There are 5 training batches, `data_batch_x.bin` for an arbitrary `x`, and one test batch, `test_batch.bin`. The `batches.meta.txt` outlines the 10 classes within the dataset:
+- airplane
+- automobile
+- bird
+- cat
+- deer
+- dog
+- frog
+- horse
+- ship
+- truck
+
