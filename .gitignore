@@ -7,5 +7,5 @@ venv/
 
 .env
 
-data/cifar-10-batches-bin
-data/cifar-10-binary.tar.gz
+data/cifar-10-batches-py
+data/cifar-10-python.tar.gz

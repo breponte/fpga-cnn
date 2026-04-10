@@ -18,7 +18,7 @@ For more details on the dataset used, visit https://www.cs.toronto.edu/~kriz/cif
 
 ## Dataset Organization
 
-There are 5 training batches, `data_batch_x.bin` for an arbitrary `x`, and one test batch, `test_batch.bin`. The `batches.meta.txt` outlines the 10 classes within the dataset:
+There are 5 training batches, `data_batch_x` for an arbitrary `x`, and one test batch, `test_batch`. The `batches.meta` outlines the 10 classes within the dataset:
 - airplane
 - automobile
 - bird
