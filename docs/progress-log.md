@@ -46,6 +46,48 @@ TODO
 - Python script for streaming CIFAR-10 image data to an echo HLS module
 - HLS Metrics for latency, throughput, and resource utilization
 
+### Iteration #2 - 2026/04/09
+
+**Objectives:**
+- Review Linux DMA drivers and PYNQ-Z2 documentation, taking notes to understand the architecture
+- draw.io architecture diagrams for dataflow (host -> board PS -> AXI DMA -> board PL -> AXI DMA -> board PS -> host) and DMA (how the DMA is implemented)
+- Python script for streaming CIFAR-10 image data to an echo HLS module
+- HLS Metrics for latency, throughput, and resource utilization
+
+**Actions Taken:**
+- Python script for socket communication between a host and client. Able to echo 10 messages between each other. Relevant files: `transmit.py`, `main.py`, `test_client.py`.
+- Python script for downloading and extracting CIFAR-10 data. Relevant files: `data_loader.py`
+- Add virtual environment and requirements.txt; update .gitignore to ignore these directories/files
+
+**Observations / Issues:**
+- None
+
+**Results / Metrics:**
+- 10 messages able to echo between a host and client socket on a local machine
+- Dataset is loaded into `~/data` programmatically
+
+**Next Steps:**
+- Finished Python scripts for streaming loaded CIFAR-10 data from a host socket to a client socket, receiving echoed data
+- Client Python script performing CNN on received CIFAR-10 data and sending back to host classification tensor, iterating from echoing
+- Review Linux DMA drivers and PYNQ-Z2 documentation, taking notes to understand the architecture
+- draw.io architecture diagrams for dataflow (host -> board PS -> AXI DMA -> board PL -> AXI DMA -> board PS -> host) and DMA (how the DMA is implemented)
+
+<!-- ### Iteration #3 - 2026/04/10
+
+**Objectives:**
+- Finished Python scripts for streaming loaded CIFAR-10 data from a host socket to a client socket, receiving echoed data
+- Client Python script performing CNN on received CIFAR-10 data and sending back to host classification tensor, iterating from echoing
+- Review Linux DMA drivers and PYNQ-Z2 documentation, taking notes to understand the architecture
+- draw.io architecture diagrams for dataflow (host -> board PS -> AXI DMA -> board PL -> AXI DMA -> board PS -> host) and DMA (how the DMA is implemented)
+
+**Actions Taken:** (what you actually did)  
+**Observations / Issues:** (bugs, hardware notes, performance metrics)  
+**Results / Metrics:**
+(measurable results)
+**Next Steps:**
+- Placeholder HLS module that echoes back CIFAR-10 data from host socket
+- HLS Metrics for latency, throughput, and resource utilization -->
+
 <!-- ### Iteration #X - YYYY/MM/DD
 
 **Objectives:** (what you aimed to do)  
