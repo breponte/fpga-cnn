@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 import time
 import tarfile
 from pathlib import Path
@@ -51,10 +51,11 @@ def download_dataset():
     """
 
     URL = "https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz"
-    OUT_DIR = Path("../data")
+    BASE_DIR = Path(__file__).resolve().parent
+    OUT_DIR = BASE_DIR / "../data"
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     archive = OUT_DIR / "cifar-10-python.tar.gz"
-    extracted = OUT_DIR / "cifar-10-batches-bin"
+    extracted = OUT_DIR / "cifar-10-batches-py"
 
     if not archive.is_file():
         print("Downloading...")
@@ -95,12 +96,20 @@ def unpickle(file):
     Args:
         file: CIFAR-10 pickle data or metadata to be loaded
     Returns:
-        dictionary: Python dictionary of the loaded CIFAR-10 data
+        data_np: Numpy 4D-array of Python dictionary's image data of the loaded CIFAR-10 data;
+            organized as (image, channel, row, column)
+        labels_np: Numpy 1D-array of Python dictionary's label data of the loaded CIFAR-10 data
     """
 
     with open(file, 'rb') as fo:
         dict = pickle.load(fo, encoding='bytes')
-    return dict
+        labels_np = np.array(dict[b'labels'])
+        data_np = np.array(dict[b'data'])
+        data_np = data_np.reshape(10000, 3, 32, 32)
+    return data_np, labels_np
 
 if __name__ == "__main__":
+    """
+    Independently downloads the dataset
+    """
     download_dataset()

@@ -36,7 +36,22 @@ RTL code translated from HLS to allow for more control and optimization of the k
 
 ## How to Use
 
-TODO
+### Setup
+
+First, create a Python virtual environment and download the dependencies. Run the following command to set up a virtual environment, activate it, and download dependencies (ensure running in root directory):
+
+```
+# create virtual environment
+python -m venv .venv
+
+# bash
+source .venv/bin/activate
+# Windows CMD
+.venv\Scripts\activate
+
+# download dependencies
+pip install -r requirements.txt
+```
 
 ## Contributors
 
