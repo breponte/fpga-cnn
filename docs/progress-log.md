@@ -72,6 +72,27 @@ TODO
 - Review Linux DMA drivers and PYNQ-Z2 documentation, taking notes to understand the architecture
 - draw.io architecture diagrams for dataflow (host -> board PS -> AXI DMA -> board PL -> AXI DMA -> board PS -> host) and DMA (how the DMA is implemented)
 
+### Iteration #2.1 - 2026/04/13
+
+**Objectives:**
+- Finished Python scripts for streaming loaded CIFAR-10 data from a host socket to a client socket, receiving echoed data
+
+**Actions Taken:**
+- Preprocessed and formatted CIFAR-10 data
+
+**Observations / Issues:**
+- Sending raw bytes is chaotic and poor practice
+- Image data cannot be streamed as raw bytes through TCP socket, errors on decoding
+
+**Results / Metrics:**
+- N/A
+
+**Next Steps:**
+- Research industry approach to sending packet data over TCP
+- Define and implement image data packet framing and transmission
+- Review Linux DMA drivers and PYNQ-Z2 documentation, taking notes to understand the architecture
+- draw.io architecture diagrams for dataflow (host -> board PS -> AXI DMA -> board PL -> AXI DMA -> board PS -> host) and DMA (how the DMA is implemented)
+
 <!-- ### Iteration #3 - 2026/04/10
 
 **Objectives:**
