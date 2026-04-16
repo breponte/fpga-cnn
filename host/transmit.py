@@ -53,7 +53,7 @@ def receive_data(client_socket):
         client_socket: The socket object for the client connection.
     """
     try:
-        message = client_socket.recv(1024)
+        message = client_socket.recv(384*8)
         return message
 
     except Exception as e:

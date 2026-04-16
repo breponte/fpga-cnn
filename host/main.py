@@ -3,6 +3,7 @@ import data_loader
 
 from pathlib import Path
 import time
+import numpy as np
 
 BATCH_COUNT = 5
 BASE_DIR = Path(__file__).resolve().parent
@@ -22,13 +23,14 @@ if __name__ == "__main__":
         data_np, labels_np = data_loader.unpickle(batch_file)
 
         start_time = time.time()
-        transmit.send_data(client_socket, data_np.tobytes())    # ignore labels, FPGA won't initially
+        transmit.send_data(client_socket, data_np[0].tobytes())    # ignore labels, FPGA won't initially
         data = transmit.receive_data(client_socket)
         end_time = time.time()
 
         round_trip_time = (end_time - start_time) * 1000  # in milliseconds
 
-        print(f"Received: {data.decode('utf-8')}")
+        data = np.frombuffer(data, np.dtype("uint8")).reshape((3, 32, 32))
+        print(f"Matches: {np.all(data == data_np[0])}")
         print(f"Round-trip time: {round_trip_time:.3f} ms")        
 
     transmit.close_connection(client_socket)
