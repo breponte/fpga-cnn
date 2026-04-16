@@ -10,7 +10,10 @@ import numpy as np
 
 HOST = '127.0.0.1'
 PORT = 5000
-MAX_BYTES_RECV = 65536
+NUM_CHANNELS = 3
+WIDTH = 32
+IMAGE_SIZE = NUM_CHANNELS * WIDTH * WIDTH
+IMAGES_PER_RECV = 1
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))     # check if host is open, fail otherwise
@@ -19,7 +22,17 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         data = []
         count = 0
         while count < 50000:
-            message = s.recv(3*32*32)
+            message = b""
+            while len(message) < IMAGE_SIZE * IMAGES_PER_RECV:
+                chunk = s.recv(
+                    min(
+                        IMAGE_SIZE * IMAGES_PER_RECV,
+                        IMAGE_SIZE * IMAGES_PER_RECV - len(message)
+                    )
+                )
+                if not chunk:
+                    break
+                message += chunk
 
             if not message:
                 break
