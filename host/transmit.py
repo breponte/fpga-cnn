@@ -6,6 +6,8 @@ Set up server on host and transmits data from the host to the FPGA board.
 
 import socket
 
+MAX_BYTES_RECV = 65536
+
 def start_server(host, port):
     """
     Starts the server using IPv4 and TCP protocol and listens for
@@ -48,12 +50,12 @@ def send_data(client_socket, data):
 
 def receive_data(client_socket):
     """
-    Receives data from the client.
+    Receives data from the client. Receives up to the specified MAX_BYTES_RECV
     Args:
         client_socket: The socket object for the client connection.
     """
     try:
-        message = client_socket.recv(384*8)
+        message = client_socket.recv(3*32*32)
         return message
 
     except Exception as e:
