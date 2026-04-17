@@ -1,6 +1,14 @@
-batch_count: 5
+# Socket connection
 host: "127.0.0.1"
 port: 5000
+
+# Dataset information
+total_images: 50000
+batch_count: 5
 num_channels: 3
-image_width: 32
-images_per_recv: 1
+image_width: 32   # square images
+
+# Transmission configuration
+images_per_recv: 5    # images to read from stream per socket.recv() call
+                      # max socket.recv() call is 16-bit integer, or 65536
+                      # so 3 * 32 * 32 * image_per_recv < 65536

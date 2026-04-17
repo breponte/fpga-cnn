@@ -55,6 +55,11 @@ def receive_data(client_socket, images_per_recv, num_channels, image_width):
     image_size = num_channels * image_width * image_width
 
     try:
+        if (image_size * images_per_recv > 65536):
+            raise ValueError(
+                f"Image size * Images per recv exceed 65536: {image_size * images_per_recv}"
+            )
+
         message = b""
         # loop continues compiling receiving data until full message is received
         while len(message) < image_size * images_per_recv:
