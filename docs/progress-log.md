@@ -93,6 +93,32 @@ TODO
 - Review Linux DMA drivers and PYNQ-Z2 documentation, taking notes to understand the architecture
 - draw.io architecture diagrams for dataflow (host -> board PS -> AXI DMA -> board PL -> AXI DMA -> board PS -> host) and DMA (how the DMA is implemented)
 
+### Iteration #2.2 - 2026/04/16
+
+**Objectives:**
+- Research industry approach to sending packet data over TCP
+- Define and implement image data packet framing and transmission
+- Review Linux DMA drivers and PYNQ-Z2 documentation, taking notes to understand the architecture
+- draw.io architecture diagrams for dataflow (host -> board PS -> AXI DMA -> board PL -> AXI DMA -> board PS -> host) and DMA (how the DMA is implemented)
+
+**Actions Taken:**
+- Researched common implementations of sending packet data over TCP
+- Implemented host-client echo of all CIFAR-10 image data with configurability of data transmission
+- 
+
+**Observations / Issues:**
+- Because the architecture is built around CIFAR-10 data which consists of 50000 images of size 3\*32\*32, we can manage without custom packet framing because both the host and client implicitly agree on the size of the data being communicated
+
+**Results / Metrics:**
+Roundtrip times based on number of images read as a minibatch from stream per recv() call.
+- 1 image per recv(): 481.337 ms (5-trial average), 488.736 ms (median)
+- 2 image per recv(): 390.990 ms (5-trial average), 389.131 ms (median)
+- 3 image per recv(): 695.159 ms (5-trial average), 347.948 ms (median)
+- 4 image per recv(): 300.575 ms (5-trial average), 293.748 ms (median)
+- 5 image per recv(): 294.872 ms (5-trial average), 290.756 ms (median)
+
+**Next Steps:** (planned actions for next session)
+
 <!-- ### Iteration #3 - 2026/04/10
 
 **Objectives:**

@@ -26,7 +26,7 @@ The testing script that simulates the FPGA development board client locally on t
 
 This file contains functions that handle the TCP hosting and send/receive transmission to/from the FPGA development board.
 
-Because the sender already knows the size of the data being sent since it's sending the data, `sendall()` is sufficient; however, the recipient doesn't know the size of the data being sent as it just receives a stream of data. Because the architecture is built around using the CIFAR-10 data, which is 50000 images of size 3\*32\*32 each, there is no variation in the length of data being sent and therefore no need to add packet framing per image. There is only need for the total image count, batch count, and images per batch to be relayed as header/metadata.
+Because the sender already knows the size of the data being sent since it's sending the data, `sendall()` is sufficient and will send all data in a continuous stream; however, the recipient doesn't know the size of the data being sent as it just receives a stream of data that can drop or stagger at times. Because the architecture is built around using the CIFAR-10 data, which is 50000 images of size 3\*32\*32 each, there is no variation in the length of data being sent and therefore no need to add packet framing per image. There is only need for the total image count, batch count, and images per batch to be relayed as header/metadata.
 
 ## visualize.py
 
