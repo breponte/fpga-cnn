@@ -17,6 +17,15 @@ FPGA-accelerated CNN on PYNQ-Z2, leveraging HLS and DMA for pipelined streaming.
 ## Reflection
 TODO
 
+## Outstanding Objectives
+
+- [ ] Review Linux DMA drivers and PYNQ-Z2 documentation, taking notes to understand the architecture
+- [ ] draw.io architecture diagrams for dataflow (host -> board PS -> AXI DMA -> board PL -> AXI DMA -> board PS -> host) and DMA (how the DMA is implemented)
+- [x] Python scripts for streaming loaded CIFAR-10 data from a host socket to a client socket, receiving echoed data
+- [ ] Client Python script performing CNN on received CIFAR-10 data and sending back to host classification tensor, iterating from echoing
+- [ ] Echo HLS module
+- [ ] HLS Metrics for latency, throughput, and resource utilization
+
 ## Journal
 
 ### Iteration #1 - 2026/04/07
@@ -104,7 +113,6 @@ TODO
 **Actions Taken:**
 - Researched common implementations of sending packet data over TCP
 - Implemented host-client echo of all CIFAR-10 image data with configurability of data transmission
-- 
 
 **Observations / Issues:**
 - Because the architecture is built around CIFAR-10 data which consists of 50000 images of size 3\*32\*32, we can manage without custom packet framing because both the host and client implicitly agree on the size of the data being communicated
@@ -117,7 +125,10 @@ Roundtrip times based on number of images read as a minibatch from stream per re
 - 4 image per recv(): 300.575 ms (5-trial average), 293.748 ms (median)
 - 5 image per recv(): 294.872 ms (5-trial average), 290.756 ms (median)
 
-**Next Steps:** (planned actions for next session)
+**Next Steps:**
+- Review Linux DMA drivers and PYNQ-Z2 documentation, taking notes to understand the architecture
+- draw.io architecture diagrams for dataflow (host -> board PS -> AXI DMA -> board PL -> AXI DMA -> board PS -> host) and DMA (how the DMA is implemented)
+- Client Python script performing CNN on received CIFAR-10 data and sending back to host classification tensor, iterating from echoing
 
 <!-- ### Iteration #3 - 2026/04/10
 
