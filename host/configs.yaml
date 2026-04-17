@@ -9,6 +9,6 @@ num_channels: 3
 image_width: 32   # square images
 
 # Transmission configuration
-images_per_recv: 5    # images to read from stream per socket.recv() call
+images_per_recv: 3    # images to read from stream per socket.recv() call
                       # max socket.recv() call is 16-bit integer, or 65536
                       # so 3 * 32 * 32 * image_per_recv < 65536
