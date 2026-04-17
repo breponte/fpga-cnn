@@ -6,11 +6,6 @@ Set up server on host and transmits data from the host to the FPGA board.
 
 import socket
 
-NUM_CHANNELS = 3
-WIDTH = 32
-IMAGE_SIZE = NUM_CHANNELS * WIDTH * WIDTH
-IMAGES_PER_RECV = 1
-
 def start_server(host, port):
     """
     Starts the server using IPv4 and TCP protocol and listens for
@@ -44,26 +39,30 @@ def start_server(host, port):
 
 def send_data(client_socket, data):
     """
-    Sends data to the client.
+    Sends ALL data to the client.
     Args:
         client_socket: The socket object for the client connection.
         data: The data to send to the client.
     """
     client_socket.sendall(data)
 
-def receive_data(client_socket):
+def receive_data(client_socket, images_per_recv, num_channels, image_width):
     """
     Receives data from the client. Receives up to the specified MAX_BYTES_RECV
     Args:
         client_socket: The socket object for the client connection.
     """
+    image_size = num_channels * image_width * image_width
+
     try:
         message = b""
-        while len(message) < IMAGE_SIZE * IMAGES_PER_RECV:
+        # loop continues compiling receiving data until full message is received
+        while len(message) < image_size * images_per_recv:
             chunk = client_socket.recv(
+                # attempt to receive full message or receive what's left
                 min(
-                    IMAGE_SIZE * IMAGES_PER_RECV,
-                    IMAGE_SIZE * IMAGES_PER_RECV - len(message)
+                    image_size * images_per_recv,
+                    image_size * images_per_recv - len(message)
                 )
             )
             if not chunk:

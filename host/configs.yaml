@@ -1,0 +1,6 @@
+batch_count: 5
+host: "127.0.0.1"
+port: 5000
+num_channels: 3
+image_width: 32
+images_per_recv: 1

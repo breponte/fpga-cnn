@@ -3,32 +3,36 @@ import data_loader
 
 from pathlib import Path
 import time
+import yaml
 import numpy as np
 
-BATCH_COUNT = 5
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "../data/cifar-10-batches-py"
-HOST = '127.0.0.1'
-PORT = 5000
-NUM_CHANNELS = 3
-WIDTH = 32
+CONFIGS_DIR = BASE_DIR / "configs.yaml"
+
+def load_yaml_config(path):
+    with open(path, 'r') as file:
+        config = yaml.safe_load(file)
+    return config
 
 if __name__ == "__main__":
+    config = load_yaml_config(CONFIGS_DIR)
+
     client_socket, client_address = \
-        transmit.start_server(HOST, PORT)   # block until connection established
+        transmit.start_server(config.get("host"), config.get("port"))   # block until connection established
     
     data_loader.download_dataset()
     
     # flatten all data batches into one large dataset
     data = []
     labels = []
-    for batch_i in range(BATCH_COUNT):
+    for batch_i in range(config.get("batch_count")):
         batch_file = DATA_DIR / f"data_batch_{batch_i + 1}"
         data_i, labels_i = data_loader.unpickle(batch_file)
         data.append(data_i)
         labels.append(labels_i)
     
-    data = np.stack(data, axis=0).reshape(-1, NUM_CHANNELS, WIDTH, WIDTH)
+    data = np.stack(data, axis=0).reshape(-1, config.get("num_channels"), config.get("image_width"), config.get("image_width"))
     labels = np.stack(labels, axis=0).reshape(-1)
 
     start_time = time.time()
@@ -36,7 +40,7 @@ if __name__ == "__main__":
     transmit.send_data(client_socket, data.tobytes())    # ignore labels, FPGA won't initially
     messages = []
     for _ in range(data.shape[0]):
-        message = transmit.receive_data(client_socket)
+        message = transmit.receive_data(client_socket, config.get("images_per_recv"), config.get("num_channels"), config.get("image_width"))
         message_np = np.frombuffer(message, np.dtype("uint8"))
         messages.append(message_np)
 
@@ -44,7 +48,7 @@ if __name__ == "__main__":
 
     round_trip_time = (end_time - start_time) * 1000  # in milliseconds
 
-    messages = np.stack(messages, axis=0).reshape((-1, NUM_CHANNELS, WIDTH, WIDTH))
+    messages = np.stack(messages, axis=0).reshape((-1, config.get("num_channels"), config.get("image_width"), config.get("image_width")))
     print(f"Matches: {np.all(messages == data)}")
     print(f"Round-trip time: {round_trip_time:.3f} ms")        
 

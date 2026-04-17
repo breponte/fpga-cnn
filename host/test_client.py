@@ -7,27 +7,33 @@ Is not referenced in main.py and is intended to be run as a standalone script.
 
 import socket
 import numpy as np
+import yaml
+from pathlib import Path
 
-HOST = '127.0.0.1'
-PORT = 5000
-NUM_CHANNELS = 3
-WIDTH = 32
-IMAGE_SIZE = NUM_CHANNELS * WIDTH * WIDTH
-IMAGES_PER_RECV = 1
+BASE_DIR = Path(__file__).resolve().parent
+CONFIGS_DIR = BASE_DIR / "configs.yaml"
+
+def load_yaml_config(path):
+    with open(path, 'r') as file:
+        config = yaml.safe_load(file)
+    return config
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.connect((HOST, PORT))     # check if host is open, fail otherwise
+    config = load_yaml_config(CONFIGS_DIR)
+    image_size = config.get("num_channels") * config.get("image_width") * config.get("image_width")
+
+    s.connect((config.get("host"), config.get("port")))     # check if host is open, fail otherwise
     
     try:
         data = []
         count = 0
         while count < 50000:
             message = b""
-            while len(message) < IMAGE_SIZE * IMAGES_PER_RECV:
+            while len(message) < image_size * config.get("images_per_recv"):
                 chunk = s.recv(
                     min(
-                        IMAGE_SIZE * IMAGES_PER_RECV,
-                        IMAGE_SIZE * IMAGES_PER_RECV - len(message)
+                        image_size * config.get("images_per_recv"),
+                        image_size * config.get("images_per_recv") - len(message)
                     )
                 )
                 if not chunk:
