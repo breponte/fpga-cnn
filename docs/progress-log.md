@@ -19,12 +19,14 @@ TODO
 
 ## Outstanding Objectives
 
-- [ ] Review Linux DMA drivers and PYNQ-Z2 documentation, taking notes to understand the architecture
 - [ ] draw.io architecture diagrams for dataflow (host -> board PS -> AXI DMA -> board PL -> AXI DMA -> board PS -> host) and DMA (how the DMA is implemented)
-- [x] Python scripts for streaming loaded CIFAR-10 data from a host socket to a client socket, receiving echoed data
+- [x] ~~Python scripts for streaming loaded CIFAR-10 data from a host socket to a client socket, receiving echoed data~~
 - [ ] Client Python script performing CNN on received CIFAR-10 data and sending back to host classification tensor, iterating from echoing
-- [ ] Echo HLS module
+- [ ] Echo HLS module with AXI DMA IP
 - [ ] HLS Metrics for latency, throughput, and resource utilization
+- [ ] Review Linux DMA drivers, taking notes to understand the architecture
+- [ ] Review PYNQ-Z2 documentation, taking notes to understand the architecture
+
 
 ## Journal
 
@@ -129,6 +131,19 @@ Roundtrip times based on number of images read as a minibatch from stream per re
 - Review Linux DMA drivers and PYNQ-Z2 documentation, taking notes to understand the architecture
 - draw.io architecture diagrams for dataflow (host -> board PS -> AXI DMA -> board PL -> AXI DMA -> board PS -> host) and DMA (how the DMA is implemented)
 - Client Python script performing CNN on received CIFAR-10 data and sending back to host classification tensor, iterating from echoing
+
+### Iteration #2.3 - 2026/04/20
+
+**Objectives:**
+- draw.io architecture diagrams for dataflow (host -> board PS -> AXI DMA -> board PL -> AXI DMA -> board PS -> host) and DMA (how the DMA is implemented)
+
+**Actions Taken:**
+- Redefined objectives by postponing research of Linux DMA for when DMA implementation is being worked on; for now the AXI DMA IP will be used for simplicity and proof of concept
+
+**Observations / Issues:** (bugs, hardware notes, performance metrics)  
+**Results / Metrics:**
+(measurable results)
+**Next Steps:** (planned actions for next session)
 
 <!-- ### Iteration #3 - 2026/04/10
 
