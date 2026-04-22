@@ -10,6 +10,7 @@ import numpy as np
 import yaml
 from pathlib import Path
 import math
+import torch
 
 BASE_DIR = Path(__file__).resolve().parent
 CONFIGS_DIR = BASE_DIR / "configs.yaml"
@@ -64,7 +65,18 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             count += 1
         
         data = np.vstack(data).reshape(-1, 3, 32, 32)
-        s.sendall(data.tobytes())     # echo the message back to the client
+
+        # feedforward images into CNN
+        model = torch.hub.load(
+            "chenyaofo/pytorch-cifar-models",
+            "cifar10_resnet20",
+            pretrained=True
+        )
+        model.eval()
+        with torch.no_grad():
+            out = model(data)
+
+        s.sendall(out.tobytes())     # echo the message back to the client
 
     except Exception as e:
         print(f"Error handling client: {e}")

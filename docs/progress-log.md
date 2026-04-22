@@ -136,6 +136,7 @@ Roundtrip times based on number of images read as a minibatch from stream per re
 
 **Objectives:**
 - draw.io architecture diagrams for dataflow (host -> board PS -> AXI DMA -> board PL -> AXI DMA -> board PS -> host) and DMA (how the DMA is implemented)
+- Client Python script performing CNN on received CIFAR-10 data and sending back to host classification tensor, iterating from echoing
 
 **Actions Taken:**
 - Redefined objectives by postponing research of Linux DMA for when DMA implementation is being worked on; for now the AXI DMA IP will be used for simplicity and proof of concept
