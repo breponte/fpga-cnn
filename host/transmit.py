@@ -46,28 +46,22 @@ def send_data(client_socket, data):
     """
     client_socket.sendall(data)
 
-def receive_data(client_socket, images_per_recv, num_channels, image_width):
+def receive_data(client_socket, total_images):
     """
     Receives data from the client. Receives up to the specified MAX_BYTES_RECV
     Args:
         client_socket: The socket object for the client connection.
     """
-    image_size = num_channels * image_width * image_width
 
     try:
-        if (image_size * images_per_recv > 65536):
-            raise ValueError(
-                f"Image size * Images per recv exceed 65536: {image_size * images_per_recv}"
-            )
-
         message = b""
         # loop continues compiling receiving data until full message is received
-        while len(message) < image_size * images_per_recv:
+        while len(message) < total_images * 10:
             chunk = client_socket.recv(
                 # attempt to receive full message or receive what's left
                 min(
-                    image_size * images_per_recv,
-                    image_size * images_per_recv - len(message)
+                    images_per_recv * 10,
+                    images_per_recv * 10 - len(message)
                 )
             )
             if not chunk:

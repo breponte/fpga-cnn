@@ -74,9 +74,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         )
         model.eval()
         with torch.no_grad():
-            out = model(data)
+            out = model(torch.from_numpy(data).float())
 
-        s.sendall(out.tobytes())     # echo the message back to the client
+        print(f"CNN forward passed!")
+
+        s.sendall(out.numpy().tobytes())     # echo the message back to the client
 
     except Exception as e:
         print(f"Error handling client: {e}")

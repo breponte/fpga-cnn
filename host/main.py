@@ -48,25 +48,16 @@ if __name__ == "__main__":
     for _ in range(math.ceil(config.get("total_images") / config.get("images_per_recv"))):
         message = transmit.receive_data(
             client_socket,
-            config.get("images_per_recv"),
-            config.get("num_channels"),
-            config.get("image_width")
+            config.get("total_images")
         )
-        message_np = np.frombuffer(message, np.dtype("uint8")).reshape((
-            -1,
-            config.get("num_channels"),
-            config.get("image_width"),
-            config.get("image_width"))
-        )
+        message_np = np.frombuffer(message, np.dtype("uint8")).reshape((-1))
         messages.append(message_np)
 
     end_time = time.time()
 
     round_trip_time = (end_time - start_time) * 1000  # in milliseconds
 
-    messages = np.vstack(messages).reshape(
-        (-1, config.get("num_channels"), config.get("image_width"), config.get("image_width"))
-    )
+    messages = np.vstack(messages).reshape((-1))
     print(f"Matches: {np.all(messages == data)}")
     print(f"Round-trip time: {round_trip_time:.3f} ms")        
 

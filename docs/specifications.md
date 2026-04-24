@@ -35,6 +35,7 @@ Key Deliverables:
 Reference Materials:
 PYNQ-Z2 board documentation: [PYNQ Docs](https://pynq.readthedocs.io/en/latest/getting_started/pynq_z2_setup.html) \
 Digilent PYNQ-Z2 Reference Manual PDF: [Reference Manual](https://dpoauwgwqsy2x.cloudfront.net/Download/PYNQ_Z2_User_Manual_v1.1.pdf)
+PYNQ-Z2 purchase: [Newark listing](https://www.newark.com/tul-corporation/1m1-m000127dvb/tul-pynq-z2-basic-kit/dp/69AC1754?cjdata=MXxOfDB8WXww&CMP=AFF-CJ-100876641-Evergreen+Link+for+Newark&source=CJ&cjevent=d227076532a311f183af02360a1eba8e&loyaltysignal=0)
 
 ## Project Phases
 ### Phase 0: Preparation / Setup (1 week)
