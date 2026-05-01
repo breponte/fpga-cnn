@@ -23,48 +23,34 @@ def load_yaml_config(path):
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     config = load_yaml_config(CONFIGS_DIR)
     image_size = config.get("num_channels") * config.get("image_width") * config.get("image_width")
+    batch_size = config.get("batch_size")
+    total_images = config.get("total_images")
 
     s.connect((config.get("host"), config.get("port")))     # check if host is open, fail otherwise
     
     try:
-        if (image_size * config.get("images_per_recv") > 65536):
-            raise ValueError(
-                f"Image size * Images per recv exceed 65536: {image_size * images_per_recv}"
-            )
-
-        data = []
-        count = 0
-        num_minibatches = math.ceil(config.get("total_images") / config.get("images_per_recv"))
-        while count < num_minibatches:
-            message = b""
-            images_per_minibatch = min(
-                config.get("images_per_recv"),
-                config.get("total_images") - count * config.get("images_per_recv")
-            )
-            while len(message) < image_size * images_per_minibatch:
-                chunk = s.recv(
-                    min(
-                        image_size * images_per_minibatch,
-                        image_size * images_per_minibatch - len(message)
-                    )
+        message = b""
+        num_batches = math.ceil(config.get("total_images") / config.get("batch_size"))
+        while len(message) < total_images * image_size:
+            chunk = s.recv(
+                # attempt to receive full message or receive what's left
+                min(
+                    batch_size * image_size,
+                    total_images * image_size - len(message)
                 )
-                if not chunk:
-                    break
-                message += chunk
-
-            if not message:
+            )
+            if not chunk:
                 break
-
-            message_np = np.frombuffer(message, np.dtype("uint8")).reshape((
+            message += chunk
+        
+        data = np.frombuffer(message, np.dtype("uint8")).reshape((
                 -1,
                 config.get("num_channels"),
                 config.get("image_width"),
-                config.get("image_width"))
-            )
-            data.append(message_np)
-            count += 1
+                config.get("image_width")
+            ))
         
-        data = np.vstack(data).reshape(-1, 3, 32, 32)
+        print(data.shape)
 
         # feedforward images into CNN
         model = torch.hub.load(
@@ -73,12 +59,16 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             pretrained=True
         )
         model.eval()
-        with torch.no_grad():
-            out = model(torch.from_numpy(data).float())
 
-        print(f"CNN forward passed!")
+        out = []
+        for start in range(0, len(data), batch_size):
+            batch = data[start:start + batch_size]
+            with torch.no_grad():
+                y = model(torch.from_numpy(batch).float())
+            out.append(y.numpy())
 
-        s.sendall(out.numpy().tobytes())     # echo the message back to the client
+        out = np.vstack(out)
+        s.sendall(out.tobytes())
 
     except Exception as e:
         print(f"Error handling client: {e}")

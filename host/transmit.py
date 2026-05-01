@@ -30,7 +30,6 @@ def start_server(host, port):
 
     server.bind((host, port))
     server.listen(1)
-    # print(f"Server listening on {host}:{port}")
 
     while True:
         client_socket, client_address = server.accept()
@@ -46,7 +45,7 @@ def send_data(client_socket, data):
     """
     client_socket.sendall(data)
 
-def receive_data(client_socket, total_images):
+def receive_data(client_socket, total_images, batch_size):
     """
     Receives data from the client. Receives up to the specified MAX_BYTES_RECV
     Args:
@@ -60,8 +59,8 @@ def receive_data(client_socket, total_images):
             chunk = client_socket.recv(
                 # attempt to receive full message or receive what's left
                 min(
-                    images_per_recv * 10,
-                    images_per_recv * 10 - len(message)
+                    batch_size * 10,
+                    total_images * 10 - len(message)
                 )
             )
             if not chunk:

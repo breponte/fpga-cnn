@@ -5,7 +5,6 @@ from pathlib import Path
 import time
 import yaml
 import numpy as np
-import math
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "../data/cifar-10-batches-py"
@@ -41,24 +40,26 @@ if __name__ == "__main__":
     )
     labels = np.stack(labels, axis=0).reshape(-1)
 
+    # trim data and labels to total_images
+    data = data[:config.get("total_images")]
+    labels = labels[:config.get("total_images")]
+
     start_time = time.time()
 
-    transmit.send_data(client_socket, data.tobytes())    # ignore labels, FPGA won't initially
-    messages = []
-    for _ in range(math.ceil(config.get("total_images") / config.get("images_per_recv"))):
-        message = transmit.receive_data(
-            client_socket,
-            config.get("total_images")
-        )
-        message_np = np.frombuffer(message, np.dtype("uint8")).reshape((-1))
-        messages.append(message_np)
+    transmit.send_data(client_socket, data.tobytes())    # ignore labels, FPGA won't initially train
+    message = transmit.receive_data(
+        client_socket,
+        config.get("total_images"),
+        config.get("batch_size")
+    )
+    messages = np.frombuffer(message, np.dtype("uint8")).reshape((-1, config.get("num_classes")))
 
     end_time = time.time()
 
     round_trip_time = (end_time - start_time) * 1000  # in milliseconds
 
-    messages = np.vstack(messages).reshape((-1))
-    print(f"Matches: {np.all(messages == data)}")
+    messages = np.argmax(messages, axis=1)  # get predicted class from output probabilities and calculate accuracy
+    print(f"Accuracy: {np.mean(messages == labels)}")
     print(f"Round-trip time: {round_trip_time:.3f} ms")        
 
     transmit.close_connection(client_socket)
