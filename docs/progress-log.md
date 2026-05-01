@@ -19,9 +19,10 @@ TODO
 
 ## Outstanding Objectives
 
-- [ ] draw.io architecture diagrams for dataflow (host -> board PS -> AXI DMA -> board PL -> AXI DMA -> board PS -> host) and DMA (how the DMA is implemented)
+- [x] ~~draw.io architecture diagram for dataflow (host -> board PS -> AXI DMA -> board PL -> AXI DMA -> board PS -> host)~~
+- [ ] draw.io architecture diagram for DMA (how the DMA is implemented)
 - [x] ~~Python scripts for streaming loaded CIFAR-10 data from a host socket to a client socket, receiving echoed data~~
-- [ ] Client Python script performing CNN on received CIFAR-10 data and sending back to host classification tensor, iterating from echoing
+- [x] ~~Client Python script performing CNN on received CIFAR-10 data and sending back to host classification tensor, iterating from echoing~~
 - [ ] Echo HLS module with AXI DMA IP
 - [ ] HLS Metrics for latency, throughput, and resource utilization
 - [ ] Review Linux DMA drivers, taking notes to understand the architecture
@@ -140,27 +141,19 @@ Roundtrip times based on number of images read as a minibatch from stream per re
 
 **Actions Taken:**
 - Redefined objectives by postponing research of Linux DMA for when DMA implementation is being worked on; for now the AXI DMA IP will be used for simplicity and proof of concept
-
-**Observations / Issues:** (bugs, hardware notes, performance metrics)  
-**Results / Metrics:**
-(measurable results)
-**Next Steps:** (planned actions for next session)
-
-<!-- ### Iteration #3 - 2026/04/10
-
-**Objectives:**
-- Finished Python scripts for streaming loaded CIFAR-10 data from a host socket to a client socket, receiving echoed data
+- Outlined draw.io architecture for system dataflow, have yet to diagram the DMA
 - Client Python script performing CNN on received CIFAR-10 data and sending back to host classification tensor, iterating from echoing
-- Review Linux DMA drivers and PYNQ-Z2 documentation, taking notes to understand the architecture
-- draw.io architecture diagrams for dataflow (host -> board PS -> AXI DMA -> board PL -> AXI DMA -> board PS -> host) and DMA (how the DMA is implemented)
 
-**Actions Taken:** (what you actually did)  
-**Observations / Issues:** (bugs, hardware notes, performance metrics)  
+**Observations / Issues:** (bugs, hardware notes, performance metrics)
+- Data is now float32, so memory might be a constraint later on, but for the purpose of the prototype it will be kept as is
+
 **Results / Metrics:**
-(measurable results)
-**Next Steps:**
-- Placeholder HLS module that echoes back CIFAR-10 data from host socket
-- HLS Metrics for latency, throughput, and resource utilization -->
+- Accuracy 0.999
+- Round-trip time: 3095.810 ms for 1000 images and batches of 70
+- Round-trip time: 79808.607 ms for 50000 images and batches of 1000
+
+**Next Steps:** (planned actions for next session)
+- Echo HLS module with AXI DMA IP
 
 <!-- ### Iteration #X - YYYY/MM/DD
 
