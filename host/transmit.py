@@ -55,12 +55,12 @@ def receive_data(client_socket, total_images, batch_size):
     try:
         message = b""
         # loop continues compiling receiving data until full message is received
-        while len(message) < total_images * 10:
+        while len(message) < total_images * 10 * 4:
             chunk = client_socket.recv(
                 # attempt to receive full message or receive what's left
                 min(
-                    batch_size * 10,
-                    total_images * 10 - len(message)
+                    batch_size * 10 * 4,
+                    total_images * 10 * 4 - len(message)
                 )
             )
             if not chunk:

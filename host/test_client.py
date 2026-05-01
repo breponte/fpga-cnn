@@ -44,13 +44,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             message += chunk
         
         data = np.frombuffer(message, np.dtype("uint8")).reshape((
-                -1,
-                config.get("num_channels"),
-                config.get("image_width"),
-                config.get("image_width")
-            ))
-        
-        print(data.shape)
+            -1,
+            config.get("num_channels"),
+            config.get("image_width"),
+            config.get("image_width")
+        ))
 
         # feedforward images into CNN
         model = torch.hub.load(
@@ -61,10 +59,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         model.eval()
 
         out = []
+        mean = np.array([0.4914, 0.4822, 0.4465], dtype=np.float32)[:, None, None]
+        std  = np.array([0.2470, 0.2435, 0.2616], dtype=np.float32)[:, None, None]
         for start in range(0, len(data), batch_size):
-            batch = data[start:start + batch_size]
+            batch = data[start:start + batch_size].astype(np.float32) / 255.0
+            batch = (batch - mean) / std
             with torch.no_grad():
-                y = model(torch.from_numpy(batch).float())
+                y = model(torch.from_numpy(batch))
             out.append(y.numpy())
 
         out = np.vstack(out)

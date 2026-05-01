@@ -52,7 +52,7 @@ if __name__ == "__main__":
         config.get("total_images"),
         config.get("batch_size")
     )
-    messages = np.frombuffer(message, np.dtype("uint8")).reshape((-1, config.get("num_classes")))
+    messages = np.frombuffer(message, np.dtype("float32")).reshape((-1, config.get("num_classes")))
 
     end_time = time.time()
 

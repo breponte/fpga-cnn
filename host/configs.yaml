@@ -4,8 +4,8 @@ port: 5000
 
 # Dataset information
 total_images: 1000
-batch_size: 500     # both size of CNN and data transmission
-batch_count: 7      # number of CIFAR-10 training batch files
-num_channels: 3
-num_classes: 10
-image_width: 32   # square images
+batch_size: 70      # both size of CNN and data transmission
+batch_count: 5      # number of CIFAR-10 training batch files
+num_channels: 3     # RGB images
+num_classes: 10     # number of classes in CIFAR-10 dataset
+image_width: 32     # square images
