@@ -3,8 +3,8 @@ host: "127.0.0.1"
 port: 5000
 
 # Dataset information
-total_images: 1000
-batch_size: 70      # both size of CNN and data transmission
+total_images: 10000
+batch_size: 1      # both size of CNN and data transmission
 batch_count: 5      # number of CIFAR-10 training batch files
 num_channels: 3     # RGB images
 num_classes: 10     # number of classes in CIFAR-10 dataset

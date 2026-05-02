@@ -148,9 +148,15 @@ Roundtrip times based on number of images read as a minibatch from stream per re
 - Data is now float32, so memory might be a constraint later on, but for the purpose of the prototype it will be kept as is
 
 **Results / Metrics:**
-- Accuracy 0.999
-- Round-trip time: 3095.810 ms for 1000 images and batches of 70
-- Round-trip time: 79808.607 ms for 50000 images and batches of 1000
+Roundtrip times based on images per minibatch (for transmission and CNN forward pass) for a total of 10000 images.
+- 1 batch size: 33333.483 ms
+- 50 batch size: 3581.638 ms
+- 100 batch size: 3325.447 ms
+- 500 batch size: 4164.042 ms
+- 1000 batch size: 8010.124 ms
+- 5000 batch size: 4603.302 ms
+- 10000 batch size: 5031.091 ms
+Accuracy: 0.9977
 
 **Next Steps:** (planned actions for next session)
 - Echo HLS module with AXI DMA IP
